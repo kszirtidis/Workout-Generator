@@ -28,6 +28,12 @@ def generate_diet_plan_action():
     diet_plan = backend.generate_diet_plan(weight_goal)
     diet_plan_text.insert(tk.END, diet_plan)
 
+    # Add the generated diet plan to the history
+    diet_plan_history.insert(0, diet_plan)
+    # Keep only the last three diet plans
+    if len(diet_plan_history) > 3:
+        diet_plan_history.pop()
+
 def generate_diet_plan_button_clicked(event=None):
     generate_diet_plan_action()
 
@@ -59,6 +65,21 @@ def show_tutorial():
     4. Click 'Generate Diet Plan' to get a personalized diet plan.
     """)
     tutorial_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+
+def show_calculation_info():
+    calculation_window = tk.Toplevel(root)
+    calculation_window.title("Calculation Information")
+    calculation_text = tk.Text(calculation_window, wrap=tk.WORD)
+    calculation_text.insert(tk.END, """
+    BMI Calculation:
+    BMI is calculated using the formula:
+    BMI = weight(kg) / height(m)^2
+
+    Diet Plan Generation:
+    Diet plans are generated based on the user's weight goal (lose, maintain, or gain). 
+    The algorithm takes into account the user's BMI category and recommends a balanced diet plan accordingly.
+    """)
+    calculation_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
 # Create main window
 root = tk.Tk()
@@ -124,6 +145,16 @@ diet_plan_label.pack(side=tk.TOP, padx=5, pady=5)
 diet_plan_text = tk.Text(result_frame, wrap=tk.WORD)  # Remove width specification
 diet_plan_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
+# Create and pack frame for diet plan history
+history_frame = ttk.Frame(root, padding="20")
+history_frame.pack(fill=tk.BOTH, expand=True)
+
+history_label = ttk.Label(history_frame, text="Last 3 Diet Plans:")
+history_label.pack(side=tk.TOP, padx=5, pady=5)
+
+diet_plan_history = tk.Listbox(history_frame, height=3)
+diet_plan_history.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
 # Create menu
 menu_bar = tk.Menu(root)
 root.config(menu=menu_bar)
@@ -131,6 +162,7 @@ root.config(menu=menu_bar)
 help_menu = tk.Menu(menu_bar, tearoff=False)
 menu_bar.add_cascade(label="Help", menu=help_menu)
 help_menu.add_command(label="Tutorial", command=show_tutorial)
+help_menu.add_command(label="Calculation Info", command=show_calculation_info)
 
 # Run the main loop
 root.mainloop()
