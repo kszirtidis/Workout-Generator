@@ -16,7 +16,7 @@ def generate_diet_plan_action():
     # Check if there's already a diet plan generated
     if diet_plan_text.get("1.0", tk.END).strip():
         # Display a confirmation dialog
-        confirm = messagebox.askyesno("Warning", "Generating a new diet plan will delete the old plan. Do you want to continue?")
+        confirm = messagebox.askyesno("Warning", "Generating a new diet plan will delete the old plan. Do you want to continue?", icon='warning')
         if not confirm:
             return  # Cancel generation if user chooses No
 
