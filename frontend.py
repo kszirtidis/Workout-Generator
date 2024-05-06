@@ -26,13 +26,16 @@ def generate_diet_plan_action():
     # Generate the new diet plan
     weight_goal = weight_goal_var.get()
     diet_plan = backend.generate_diet_plan(weight_goal)
+    diet_plan_text.config(state="normal")  # Set state to normal to insert text
     diet_plan_text.insert(tk.END, diet_plan)
+    diet_plan_text.config(state="disabled")  # Set state to disabled after insertion
 
     # Add the generated diet plan to the history
     diet_plan_history.insert(0, diet_plan)
     # Keep only the last three diet plans
     if len(diet_plan_history) > 3:
         diet_plan_history.pop()
+
 
 def generate_diet_plan_button_clicked(event=None):
     generate_diet_plan_action()
@@ -161,7 +164,7 @@ result_frame.pack(padx=20, pady=10)
 diet_plan_label = ttk.Label(result_frame, text="Diet Plan:")
 diet_plan_label.pack(side=tk.TOP, padx=5, pady=5)
 
-diet_plan_text = tk.Text(result_frame, wrap=tk.WORD)  # Remove width specification
+diet_plan_text = tk.Text(result_frame, wrap=tk.WORD, state="disabled") 
 diet_plan_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # Create and pack frame for diet plan history
