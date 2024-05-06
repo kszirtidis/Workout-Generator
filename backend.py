@@ -20,10 +20,6 @@ def interpret_bmi(bmi):
     else:
         return "Obese"
 
-import openai
-import openai
-
-import openai
 
 def generate_diet_plan(weight_goal):
     """

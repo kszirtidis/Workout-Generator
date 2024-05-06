@@ -37,6 +37,25 @@ def generate_diet_plan_action():
 def generate_diet_plan_button_clicked(event=None):
     generate_diet_plan_action()
 
+def generate_diet_plan_from_bmi():
+    try:
+        bmi = float(bmi_entry.get())
+        if bmi <= 0:
+            raise ValueError
+        # Clear the old diet plan
+        diet_plan_text.delete("1.0", tk.END)
+        # Generate the new diet plan
+        weight_goal = weight_goal_var.get()
+        diet_plan = backend.generate_diet_plan_from_bmi(bmi, weight_goal)
+        diet_plan_text.insert(tk.END, diet_plan)
+        # Add the generated diet plan to the history
+        diet_plan_history.insert(0, diet_plan)
+        # Keep only the last three diet plans
+        if len(diet_plan_history) > 3:
+            diet_plan_history.pop()
+    except ValueError:
+        messagebox.showerror("Error", "Please enter a valid BMI.")
+
 def show_updates_and_fixes():
     updates_window = tk.Toplevel(root)
     updates_window.title("Updates/Fixes")
